@@ -3,8 +3,7 @@ import Image from "next/image";
 import styles from "../../../styles/Home.module.css";
 import { useRouter } from "next/router";
 import Linkify from "react-linkify";
-
-import useFeedRecent from "../../../hooks/use-feed-recent";
+import useFeedRecent from "../../../features/hooks/useFeedRecent";
 
 const SinglePageView = () => {
   const router = useRouter();
@@ -20,12 +19,11 @@ const SinglePageView = () => {
   // const dataJSON = data.json();
 
   // console.log({dataJSON})
-  const { feed } = useFeedRecent(id);
+  const { feed } = useFeedRecent(id as string);
   console.log(feed);
 
   const baseImageURL =
     "https://matrix.matrix.notes.site/_matrix/media/r0/download/matrix.notes.site/";
-
 
   return (
     <div className={styles.container}>
@@ -40,13 +38,13 @@ const SinglePageView = () => {
 
         {format && format === "html" && (
           <div className="flex flex-col">
-            {feed?.map((item) => {
+            {feed?.map((item: any) => {
               if (item.type == "m.image") {
                 return (
                   <div
                     key={item.id}
                     style={{
-                      "margin-bottom": "1rem",
+                      marginBottom: "1rem",
                       position: "relative",
                       width: "80%",
                       paddingBottom: "100%",
@@ -71,14 +69,18 @@ const SinglePageView = () => {
                     <div
                       className=""
                       style={{
-                        "padding-bottom": "1rem",
-                        "word-break": "break-word",
+                        paddingBottom: "1rem",
+                        wordBreak: "break-word",
                       }}
                       key={item.id}
                     >
                       {/* todo: linkify, paragraph style */}
                       {/* hover for relative date? */}
-                      <span className="text-white my-3">{item.data ? `${item.data} (transcribed)` : '(transcribing...)'}</span>
+                      <span className="text-white my-3">
+                        {item.data
+                          ? `${item.data} (transcribed)`
+                          : "(transcribing...)"}
+                      </span>
                       {/* {
                         item.fileName && <audio controls={true} src={`${baseImageURL}${item.fileName}`}></audio>
                       } */}
@@ -89,15 +91,15 @@ const SinglePageView = () => {
                     <div
                       className=""
                       style={{
-                        "padding-bottom": "1rem",
-                        "word-break": "break-all",
+                        paddingBottom: "1rem",
+                        wordBreak: "break-all",
                       }}
                       key={item.id}
                     >
                       {/* todo: linkify, paragraph style */}
                       {/* hover for relative date? */}
                       <span className="text-white my-3">
-                              <Linkify>{item.data}</Linkify>
+                        <Linkify>{item.data}</Linkify>
                       </span>
                     </div>
                   );
